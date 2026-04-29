@@ -17,12 +17,6 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-      - name: Download docs artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: docs
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Store PR id as variable
         id: pr

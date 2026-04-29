@@ -27,7 +27,7 @@ jobs:
 
       - name: Store PR id
         run: |
-          echo ${{ github.event.number }} > ./docs/target/generated-docs/pr-id.txt
+          echo ${{ github.event.number }} > ./target/generated-docs/pr-id.txt
 
       - name: Build blog
         uses: ./
