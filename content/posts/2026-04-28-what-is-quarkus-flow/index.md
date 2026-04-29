@@ -4,6 +4,7 @@ date: 2026-04-28 19:00:00 +0000
 tags: [blogging, quarkus-flow, flow, workflow]
 description: "Learn what is Quarkus Flow and how it can help you to orchestrate complex flows"
 toc: true
+image: flow.jpg
 ---
 
 ## 1. Overview
