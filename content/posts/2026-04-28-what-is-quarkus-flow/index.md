@@ -4,7 +4,7 @@ date: 2026-04-28 19:00:00 +0000
 tags: [blogging, quarkus-flow, flow, workflow]
 description: "Learn what is Quarkus Flow and how it can help you to orchestrate complex flows"
 toc: true
-image: https://unsplash.com/photos/a-person-drawing-a-diagram-on-a-piece-of-paper-lFtttcsx5Vk?q=80&w=3198&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+image: https://images.unsplash.com/photo-1580203784276-6ded72fea88a?q=80&w=2148&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 ---
 
 ## 1. Overview
