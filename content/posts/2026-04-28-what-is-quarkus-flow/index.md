@@ -2,8 +2,9 @@
 title: "A brief introduction to Quarkus Flow"
 date: 2026-04-28 19:00:00 +0000
 tags: [blogging, quarkus-flow, flow, workflow]
-description: "Learn what is Quarkus Flow and how it can help you to orchestrate complex flows"
+description: "Take your first look at Quarkus Flow and discover how it helps orchestrate complex workflows with simplicity and flexibility"
 toc: true
+author: Matheus Cruz
 image: https://images.unsplash.com/photo-1580203784276-6ded72fea88a?q=80&w=2148&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 ---
 
@@ -556,7 +557,7 @@ In this tutorial, we explored Quarkus Flow, a lightweight and vendor-neutral wor
 
 Quarkus Flow combines the power of the Serverless Workflow specification with Quarkus's cloud-native capabilities, making it an excellent choice for building modern, scalable workflow applications. Its vendor-neutral approach ensures you're not locked into a specific platform, while its integration with Quarkus provides native compilation, fast startup times, and low memory footprint.
 
-### 12.1 Further Reading
+### 10.1 Further Reading
 
 - [Quarkus Flow Documentation](https://docs.quarkiverse.io/quarkus-flow/dev/index.html)
 - [CNCF Serverless Workflow Specification](https://github.com/serverlessworkflow/specification)
