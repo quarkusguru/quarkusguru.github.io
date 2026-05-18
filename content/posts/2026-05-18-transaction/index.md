@@ -1,6 +1,6 @@
 ---
 title: "Understanding @Transactional in Quarkus"
-date: 2026-05-06 19:00:00 +0000
+date: 2026-05-18 02:00:00 +0000
 tags: [jta, narayana, transactions, understanding, for-my-students]
 description: "Explore the @Transactional annotation in Quarkus and understand its importance in managing transactions"
 toc: true
