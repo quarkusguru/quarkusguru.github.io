@@ -53,8 +53,7 @@ CDI also defines the concept of **interceptors**, which are used to separate cro
 
 Hibernate ORM is not a Jakarta EE specification itself, but it is the reference implementation of the [Jakarta Persistence](https://jakarta.ee/specifications/persistence/3.1/) (JPA) specification.
 It is responsible for mapping Java objects to database tables and managing their lifecycle.
-Quarkus integrates Hibernate ORM through the [quarkus-hibernate-orm](https://quarkus.io/guides/hibernate-orm) extension,
-which configures and boots Hibernate at build time to further reduce startup time and memory footprint.
+Quarkus integrates Hibernate ORM through the [quarkus-hibernate-orm](https://quarkus.io/guides/hibernate-orm) extension.
 
 ### Agroal
 
