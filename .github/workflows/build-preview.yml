@@ -68,13 +68,12 @@ jobs:
 
       - name: Update PR status comment on failure
         if: ${{ failure() }}
-        uses: actions-cool/maintain-one-comment@v3.2.0
+        uses: quarkusio/action-helpers@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          action: maintain-one-comment
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ steps.pr.outputs.pr_number }}
           body: |
             😭 Deploy PR Preview failed.
             <img width="300" src="https://user-images.githubusercontent.com/507615/90250824-4e066700-de6f-11ea-8230-600ecc3d6a6b.png">
-            <!-- Sticky Pull Request Comment -->
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          number: ${{ steps.pr.outputs.pr_number }}
-          emojis: 'confused'
+          body-marker: <!-- Preview status comment marker -->
