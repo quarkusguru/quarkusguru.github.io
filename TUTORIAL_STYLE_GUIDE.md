@@ -231,8 +231,11 @@ quarkus create app com.example:project -xrest-jackson
 ### Language
 - Use active voice: "We create a class" not "A class is created"
 - Use present tense: "The method returns" not "The method will return"
-- Use "we" for actions: "Let's create a workflow"
+- Use "we" for actions: "Let us create a workflow"
 - Use "you" when addressing the reader: "You should ensure..."
+- Do not use contractions; write the full form: "cannot" not "can't", "I would" not "I'd", "it is" not "it's", "do not" not "don't", "let us" not "let's"
+- Do not use em-dashes (—); use a semicolon, parentheses, or two separate sentences instead
+- Do not use a colon to join clauses in prose; write two separate sentences instead. Colons may still introduce a list or a code block
 
 ### Formatting
 - **Bold** for emphasis on important terms or concepts
@@ -310,6 +313,9 @@ Before publishing, verify:
 - [ ] Prerequisites are clearly stated
 - [ ] Expected outputs are shown
 - [ ] Common pitfalls are addressed
+- [ ] No contractions are used (full forms only)
+- [ ] No em-dashes are used
+- [ ] No colons are used to join clauses in prose (lists and code blocks excepted)
 
 ## Examples of Good Practices
 
@@ -436,5 +442,5 @@ This style guide should be:
 
 ---
 
-**Last Updated**: 2026-04-29
-**Version**: 1.0
+**Last Updated**: 2026-06-24
+**Version**: 1.2
