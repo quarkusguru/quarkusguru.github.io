@@ -502,15 +502,18 @@ For the full reference, see the [Durable Workflows in Kubernetes](https://docs.q
 quarkus.flow.persistence.exclude-workflows=guru.quarkus:approve-vacation:0.1.0
 ```
 
-**Make task side effects idempotent:** After a crash, a running task may execute again from the last checkpoint, and a `listen` task may receive the same event more than once. Tasks should therefore be safe to repeat. Notice that our `VacationStore.addRequest` uses Redis `hsetnx` (set-if-not-exists), so replaying `persistVacationRequest` never creates a duplicate request.
-
-**Handle transient failures inside the workflow:** Recovery restores paused and running tasks, but not tasks that have already failed. Wrap risky operations (such as HTTP calls to external systems) in a `try`/`catch` so a temporary error is recovered instead of failing the instance. We covered the `try` task and HTTP retry configuration in [A brief introduction to Quarkus Flow](/posts/a-brief-introduction-to-quarkus-flow).
+**Make task side effects idempotent:** After a crash, a running task may execute again from the last checkpoint, and a `listen` task may receive the same event more than once. 
+Tasks should therefore be safe to repeat. 
+Notice that our `VacationStore.addRequest` uses Redis `hsetnx` (set-if-not-exists), so replaying `persistVacationRequest` never creates a duplicate request.
 
 **Pick the store that matches your topology:** Use MVStore for local development, and Redis or JPA for distributed, multi-replica production workloads. Remember to include only one provider per project, and manage the JPA schema with Flyway in production.
 
-**Version your workflows:** We pinned `approve-vacation` to `0.1.0`. An in-flight instance keeps resolving the definition it started with, so versioning lets you evolve a workflow without breaking work that is already running.
+**Version your workflows:** We pinned `approve-vacation` to `0.1.0` (by default is `0.1.0`). 
+An in-flight instance keeps resolving the definition it started with, 
+so versioning lets you evolve a workflow without breaking work that is already running.
 
-**On Kubernetes, gate readiness on the lease and choose the right rollout:** Set `quarkus.flow.durable.kube.health.readiness.require-lease=true` and use `Recreate` (single replica) or `RollingUpdate` with `maxUnavailable: 1` so leases are released before replacements start.
+**On Kubernetes, gate readiness on the lease and choose the right rollout:** 
+Set `quarkus.flow.durable.kube.health.readiness.require-lease=true` and use `Recreate` (single replica) or `RollingUpdate` with `maxUnavailable: 1` so leases are released before replacements start.
 
 ## 11. Conclusion
 
