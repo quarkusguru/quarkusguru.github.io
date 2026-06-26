@@ -56,22 +56,37 @@ This command creates a Quarkus project with the [REST Jackson](https://quarkus.i
 
 If you prefer, you can use [Code QuarkusIO](https://code.quarkus.io) to generate a Quarkus project with a visual interface.
 
+Let us add the Quarkus Flow BOM into `pom.xml` file:
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>${quarkus.platform.group-id}</groupId>
+            <artifactId>${quarkus.platform.artifact-id}</artifactId>
+            <version>${quarkus.platform.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+dependency
+
 Next, add the `io.quarkiverse.flow:quarkus-flow` and `io.quarkiverse.flow:quarkus-flow-redis` dependencies into the `pom.xml` file:
 
 ```xml
 <dependency>
     <groupId>io.quarkiverse.flow</groupId>
     <artifactId>quarkus-flow</artifactId>
-    <version>0.10.2</version>
 </dependency>
 <dependency>
     <groupId>io.quarkiverse.flow</groupId>
     <artifactId>quarkus-flow-redis</artifactId>
-    <version>0.10.2</version>
 </dependency>
 ```
 
-**NOTE:** At this moment, the current Quarkus Flow version is 0.10.2!
+**NOTE:** At this moment, the current Quarkus Flow version is 0.11.0!
 
 The `quarkus-flow-redis` extension stores workflow checkpoints in Redis. In dev and test mode, Quarkus [Dev Services](https://quarkus.io/guides/redis-dev-services) automatically starts a Redis container for you, so you can follow along without any extra configuration.
 
@@ -172,11 +187,14 @@ package guru.quarkus;
 import io.quarkiverse.flow.Flow;
 import io.serverlessworkflow.api.types.Workflow;
 import io.serverlessworkflow.fluent.func.FuncWorkflowBuilder;
-import io.serverlessworkflow.fluent.func.dsl.FuncDSL;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.time.LocalDate;
+
+import static io.serverlessworkflow.fluent.func.dsl.FuncDSL.function;
+import static io.serverlessworkflow.fluent.func.dsl.FuncDSL.listen;
+import static io.serverlessworkflow.fluent.func.dsl.FuncDSL.toOne;
 
 @ApplicationScoped
 public class RequestVacationFlow extends Flow {
@@ -189,12 +207,12 @@ public class RequestVacationFlow extends Flow {
         return FuncWorkflowBuilder
                 .workflow("approve-vacation", "guru.quarkus", "0.1.0")
                 .tasks(
-                        FuncDSL.function("persistVacationRequest", request -> {
+                        function("persistVacationRequest", request -> {
                             store.addRequest(request);
                             return request;
                         }, VacationRequest.class),
-                        FuncDSL.listen("waitByManagerReview", FuncDSL.toOne("guru.quarkus.vacation.reviewed")),
-                        FuncDSL.function("handleManagerReview", event -> {
+                        listen("waitByManagerReview", toOne("guru.quarkus.vacation.reviewed")),
+                        function("handleManagerReview", event -> {
                             store.review(event.employeeId(), event.approved());
                             return event;
                         }, VacationRequestReviewedEvent.class)
@@ -247,7 +265,7 @@ public class VacationResource {
     RequestVacationFlow flow;
 
     @Inject
-    WorkflowApplication workflow;
+    WorkflowApplication workflowApp;
 
     @Inject
     ObjectMapper mapper;
@@ -283,7 +301,7 @@ public class VacationResource {
     @POST
     @Path("/reviews")
     public Response review(RequestVacationFlow.VacationRequestReviewedEvent event) {
-        EventPublisher pub = workflow.eventPublishers().stream().findFirst()
+        EventPublisher pub = workflowApp.eventPublishers().stream().findFirst()
                 .orElseThrow(() -> new IllegalStateException("No workflow event publishers!"));
         JsonNode jsonNode = mapper.convertValue(event, JsonNode.class);
         pub.publish(new CloudEventBuilder()
@@ -424,7 +442,6 @@ Add the `io.quarkiverse.flow:quarkus-flow-durable-kubernetes` dependency to the 
 <dependency>
     <groupId>io.quarkiverse.flow</groupId>
     <artifactId>quarkus-flow-durable-kubernetes</artifactId>
-    <version>0.10.2</version>
 </dependency>
 ```
 
