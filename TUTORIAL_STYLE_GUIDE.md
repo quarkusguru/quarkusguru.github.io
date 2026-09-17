@@ -233,9 +233,10 @@ quarkus create app com.example:project -xrest-jackson
 - Use present tense: "The method returns" not "The method will return"
 - Use "we" for actions: "Let us create a workflow"
 - Use "you" when addressing the reader: "You should ensure..."
-- Do not use contractions; write the full form: "cannot" not "can't", "I would" not "I'd", "it is" not "it's", "do not" not "don't", "let us" not "let's"
-- Do not use em-dashes (—); use a semicolon, parentheses, or two separate sentences instead
-- Do not use a colon to join clauses in prose; write two separate sentences instead. Colons may still introduce a list or a code block
+- Do not use contractions. Write the full form: "cannot" not "can't", "I would" not "I'd", "it is" not "it's", "do not" not "don't", "let us" not "let's"
+- Do not use em-dashes (—). Use a comma, parentheses, or two separate sentences instead
+- Do not use a colon to join clauses in prose. Write two separate sentences instead. Colons may still introduce a list or a code block
+- Do not use semicolons (;) in prose. Use a comma, parentheses, or two separate sentences instead. This rule applies to prose only. Code blocks that require semicolons as syntax (Java statements, import lines, and so on) are unaffected
 
 ### Formatting
 - **Bold** for emphasis on important terms or concepts
@@ -316,6 +317,7 @@ Before publishing, verify:
 - [ ] No contractions are used (full forms only)
 - [ ] No em-dashes are used
 - [ ] No colons are used to join clauses in prose (lists and code blocks excepted)
+- [ ] No semicolons are used in prose (code blocks excepted)
 
 ## Examples of Good Practices
 
@@ -442,5 +444,5 @@ This style guide should be:
 
 ---
 
-**Last Updated**: 2026-06-24
-**Version**: 1.2
+**Last Updated**: 2026-09-16
+**Version**: 1.3
