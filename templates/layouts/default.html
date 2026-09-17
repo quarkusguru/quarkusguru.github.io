@@ -17,6 +17,11 @@
     {#seo page site /}
     {#favicon site/}
     {#rss site /}
+    <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/images/site.webmanifest" />
     <!-- Theme initialization script (prevent flash) -->
     <script>
       (function() {
@@ -37,9 +42,21 @@
     </main>
 
     <footer class="site-footer">
-        <div class="footer-inner">
-            <p>Powered by <a href="https://quarkus.guru.github.io" target="_blank">Roq 🗿</a></p>
-            <p>&copy; {now.format('Y')} {site.title}. All rights reserved.</p>
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="{site.url('/images/quark.svg')}" alt="" width="18" height="18">
+                <span>{site.title.toUpperCase}</span>
+            </div>
+            <nav class="site-footer__nav">
+                {#for item in site.data.navigation}
+                <a href="{site.url.resolve(item.url)}">{item.title}</a>
+                {/for}
+                <a href="{site.url('/rss.xml')}">RSS</a>
+            </nav>
+            <p class="site-footer__legal">
+                &copy; {now.format('Y')} {site.title}. Built with <a href="https://iamroq.com" target="_blank" rel="noopener">Quarkus Roq</a>.
+                Quarkus Guru is an independent community site and is not affiliated with or endorsed by the Quarkus project.
+            </p>
         </div>
     </footer>
 

@@ -2,6 +2,7 @@
 title: "A brief introduction to Quarkus Flow"
 date: 2026-04-28 19:00:00 +0000
 tags: [blogging, quarkus-flow, flow, workflow]
+category: Quarkus Flow
 description: "Take your first look at Quarkus Flow and discover how it helps orchestrate complex workflows with simplicity and flexibility"
 toc: true
 author: Matheus Cruz

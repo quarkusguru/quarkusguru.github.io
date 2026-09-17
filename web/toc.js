@@ -53,7 +53,7 @@
                 link.href = '#' + id;
                 link.className = 'toc-link';
                 link.setAttribute('data-target', id);
-                link.innerHTML = `<span class="toc-number">${sectionNum}.</span> ${text}`;
+                link.textContent = text;
 
                 li.appendChild(link);
                 tocList.appendChild(li);
@@ -76,7 +76,7 @@
                 link.href = '#' + id;
                 link.className = 'toc-link';
                 link.setAttribute('data-target', id);
-                link.innerHTML = `<span class="toc-bullet">•</span> ${text}`;
+                link.textContent = text;
 
                 li.appendChild(link);
                 currentSublist.appendChild(li);

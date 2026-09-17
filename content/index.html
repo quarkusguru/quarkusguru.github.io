@@ -16,24 +16,29 @@ social:
   - name: GitHub
     link: https://github.com/quarkusguru/quarkus.guru
     icon: github
-paginate: posts
 ---
 
-<!-- Introduction Section -->
-<div class="intro">
-  <h1>{site.data.greeting}</h1>
-  <p>{site.data.tagline}</p>
-</div>
-
-
-<!-- Posts Section -->
-<div class="posts">
-  <h2>Blog</h2>
-  <div class="posts-wrapper">
-    {#for post in site.collections.posts.paginated(page.paginator)}
-    {#postCard post site/}
-    {/for}
+<section class="home-hero">
+  <div class="console">
+    <div class="console__bar">
+      <img src="{site.url('/images/quark.svg')}" alt="">
+      <span class="console__name">quarkus.guru</span>
+      <span>&mdash; recent</span>
+      <span class="console__count">{site.collections.posts.size} guides</span>
+    </div>
+    <div class="console__body">
+      {#for post in site.collections.posts}
+      {#if post_count <= 12}
+      <a class="console__row" href="{post.url}">
+        <span class="console__date">{post.date.format('yyyy-MM-dd')}</span>
+        <span class="console__title">{post.title}</span>
+        {#if post.data.category??}<span class="console__cat">{post.data.category}</span>
+        {#else if post.data.tags??}<span class="console__cat">{post.data.tags.asStrings.get(0)}</span>
+        {/if}
+      </a>
+      {/if}
+      {/for}
+      <a class="console__more" href="{site.url('/tags')}">&rarr; browse all posts by tag</a>
+    </div>
   </div>
-
-  {#include partials/posts-paginator /}
-</div>
+</section>

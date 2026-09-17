@@ -2,6 +2,7 @@
 title: "Durable Workflows with Quarkus Flow"
 date: 2026-06-18 16:15:00 +0000
 tags: [blogging, quarkus-flow, flow, workflow, durable-workflows, persistence]
+category: Quarkus Flow
 description: "Make long-running and Human-In-The-Loop workflows durable with the Quarkus Flow Persistence extension, so they survive crashes and restarts and resume from the last checkpoint"
 toc: true
 author: Matheus Cruz
