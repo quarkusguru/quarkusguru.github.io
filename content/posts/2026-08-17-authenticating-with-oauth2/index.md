@@ -70,7 +70,8 @@ The **Authorization Code Flow** involves a real user and a browser redirect. Thi
 
 Since the **Authorization Server** is the only party that ever sees the user credentials, it can authenticate the same user for any other application that trusts it, without each application handling a password of its own. This centralized authentication is what makes SSO possible, and it is a direct benefit of adopting the Authorization Code Flow.
 
-NOTE: For simplicity I prefer to talk about Authorization Code Flow instead [Authorization Code Flow + PKCE](https://www.rfc-editor.org/info/rfc7636/), The Authorization Code Flow + PKCE is an additional layer of protection to avoid the **authorization code interception attacks**.
+> [!NOTE]
+> For simplicity I prefer to talk about Authorization Code Flow instead [Authorization Code Flow + PKCE](https://www.rfc-editor.org/info/rfc7636/), The Authorization Code Flow + PKCE is an additional layer of protection to avoid the **authorization code interception attacks**.
 
 The **Client Credentials Flow** is simpler, since it does not involve a user or a browser at all. A **Client** authenticates directly with the **Authorization Server** using its own client ID and client secret, and the **Authorization Server** returns an access token that represents the client itself, not a specific user. The flow works as follows:
 
@@ -93,7 +94,8 @@ To request an ID Token, the **Client** adds the `openid` scope to the authorizat
 
 OIDC also standardizes **Discovery**, a JSON document exposed at `/.well-known/openid-configuration` that advertises the authorization endpoint, the token endpoint, the UserInfo endpoint, and the signing keys the **Authorization Server** uses, all in one place. [Section 5.6](#56-oauth2-versus-oidc-discovery) revisits this document, since it is what lets Quarkus Flow build an `OidcClient` without you specifying the token endpoint path by hand.
 
-NOTE: The Client Credentials Flow described above has no end user, so an ID Token would have nothing to identify.
+> [!NOTE]
+> The Client Credentials Flow described above has no end user, so an ID Token would have nothing to identify.
 
 ## 3. Prerequisites
 
@@ -399,7 +401,8 @@ For example, routing only `processPhoto` to a specific client, without touching 
 quarkus.flow.oidc.client."guru.quarkus\:processPhotoWorkflow\:0.1.0.task.processPhoto".name=namedFlowPhotos
 ```
 
-NOTE: The quotes and the escaped colons, the composite key mixes namespace, workflow name, and version, and each colon must be escaped as `\:` inside the property key. 
+> [!NOTE]
+> The quotes and the escaped colons, the composite key mixes namespace, workflow name, and version, and each colon must be escaped as `\:` inside the property key.
 
 Quarkus Flow tries every level from the most specific match down to the named policy, and stops at the first one it finds, so a single task override like this one takes precedence over the `flowPhotosAuth` routing declared for the rest of the workflow.
 
