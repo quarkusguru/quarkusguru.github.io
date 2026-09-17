@@ -625,7 +625,7 @@
         font-family: var(--font-mono);
         font-size: .72rem;
     }
-    .code-lang { color: var(--amber); text-transform: uppercase; letter-spacing: .08em; }
+    .code-lang { color: var(--code-nm); text-transform: uppercase; letter-spacing: .08em; }
     .code-copy {
         font-family: var(--font-mono);
         font-size: .72rem;

@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Quarkus Guru" width="32" height="32"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><ellipse cx="16" cy="16" rx="12.5" ry="5.2" fill="none" stroke="#4695EB" stroke-width="2.2" transform="rotate(-27 16 16)"></ellipse><circle cx="16" cy="16" r="8.4" fill="#FF1E4C"></circle></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Quarkus Guru" width="32" height="32">
+  <defs>
+    <radialGradient id="qg-nucleus" cx="38%" cy="32%" r="72%">
+      <stop offset="0%" stop-color="#ff7089"/>
+      <stop offset="55%" stop-color="#ff1e4c"/>
+      <stop offset="100%" stop-color="#cf0f39"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="16" cy="16" rx="13.2" ry="5.4" fill="none" stroke="#4695eb" stroke-width="2" stroke-linecap="round" transform="rotate(-28 16 16)"/>
+  <circle cx="16" cy="16" r="8" fill="url(#qg-nucleus)"/>
+  <path d="M2.8,16 A13.2,5.4 0 0 0 29.2,16" fill="none" stroke="#4695eb" stroke-width="2" stroke-linecap="round" transform="rotate(-28 16 16)"/>
+</svg>
