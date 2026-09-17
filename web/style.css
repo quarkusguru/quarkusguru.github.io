@@ -166,6 +166,23 @@
     .article-content pre code .operator { @apply text-accent-500 dark:text-accent-500; }
     .article-content pre code .token { @apply text-primary dark:text-primary; }
 
+    /* Copy button on code blocks */
+    .article-content pre { @apply relative; }
+    .article-content .copy-button {
+        @apply absolute top-2 right-2 inline-flex items-center justify-center;
+        @apply w-8 h-8 p-0 border-0 rounded-md cursor-pointer;
+        @apply bg-white/10 text-white/60 opacity-70 no-underline;
+        transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+    .article-content .copy-button:hover,
+    .article-content .copy-button:focus-visible {
+        @apply bg-white/20 text-white opacity-100 no-underline;
+        outline: 2px solid var(--color-accent-400);
+        outline-offset: 2px;
+    }
+    .article-content .copy-button.copied { @apply text-green-400 opacity-100; }
+    .article-content .copy-button svg { @apply w-4 h-4; }
+
     .page-content-area { @apply max-w-5xl mx-auto; }
     .page-content-area .page-content { @apply max-w-none; }
     .page-content-area header { @apply mb-8; }
