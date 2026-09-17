@@ -5,62 +5,83 @@ asciidoc-attributes:
 ---
 {@io.quarkiverse.roq.frontmatter.runtime.model.DocumentPage page}
 
-<div class="post-page">
-  <!-- Post Header (full width) -->
-  <header>
-    <h1>{page.title}</h1>
-    <div class="post-meta">
-      <time datetime="{page.date}">{page.date.format('yyyy-MM-dd')}</time>
-      {#if page.data.author??} • <span>{page.data.author}</span>{/if}
+<article class="post">
+  <nav class="post-breadcrumb" aria-label="Breadcrumb">
+    <a href="{site.url.relative}">Blog</a>
+    {#if page.data.category??}
+    <span class="post-breadcrumb__sep">/</span>
+    <a href="{site.url('/posts/tag/')}{page.data.category.slugify}">{page.data.category}</a>
+    {#else if page.data.tags??}
+    <span class="post-breadcrumb__sep">/</span>
+    <a href="{site.url('/posts/tag/')}{page.data.tags.asStrings.get(0).slugify}">{page.data.tags.asStrings.get(0)}</a>
+    {/if}
+    <span class="post-breadcrumb__sep">/</span>
+    <span class="post-breadcrumb__current">{page.title}</span>
+  </nav>
+
+  <header class="post-head">
+    <h1 class="post-title">{page.title}</h1>
+    <div class="post-byline">
+      <span class="avatar" aria-hidden="true">{#if page.data.author??}{page.data.author.charAt(0)}{#else}Q{/if}</span>
+      <span class="post-byline__text">
+        <span class="post-byline__name">{page.data.author ?: site.title}</span>
+        <span class="post-byline__sub">
+          <time datetime="{page.date}">{page.date.format('MMM d, yyyy')}</time>
+          &middot; <span data-reading-time>&mdash;</span>
+        </span>
+      </span>
+      {#if page.data.category??}
+      <a class="post-cat" href="{site.url('/posts/tag/')}{page.data.category.slugify}">{page.data.category}</a>
+      {#else if page.data.tags??}
+      <a class="post-cat" href="{site.url('/posts/tag/')}{page.data.tags.asStrings.get(0).slugify}">{page.data.tags.asStrings.get(0)}</a>
+      {/if}
     </div>
   </header>
 
-  <div class="post-layout-wrapper">
+  <div class="post-layout">
     {#include partials/toc /}
 
-    <!-- Main Content Area -->
-    <article class="post-content-area">
-      <div class="article-content">
+    <div class="post-main">
+      <div class="article-content prose dark:prose-invert">
         {#insert /}
       </div>
 
-      <!-- Metadata Section -->
-      <div class="metadata-box mt-12">
-        <h3 class="metadata-title">Metadata</h3>
-
-        <div class="metadata-row">
-          <span class="metadata-label">Published</span>
-          <span class="metadata-value">{page.date.format('MM-dd-yyyy')}</span>
-        </div>
-
-        {#if page.data.tags??}
-        <div class="metadata-row">
-          <span class="metadata-label">Tags</span>
-          <div class="metadata-tags">
-            {#for tag in page.data.tags.asStrings}
-            {#let tagSlug = tag.slugify}
-            <a href="{site.url('/posts/tag', tagSlug)}" class="tag-pill">&#35; {tagSlug}</a>
-            {/for}
-          </div>
-        </div>
-        {/if}
+      {#if page.data.tags??}
+      <div class="post-tags">
+        {#for tag in page.data.tags.asStrings}
+        <a href="{site.url('/posts/tag/')}{tag.slugify}" class="tag-pill">#{tag.slugify}</a>
+        {/for}
       </div>
+      {/if}
 
-      <footer>
+      {#if page.data.author??}
+      <aside class="post-author">
+        <span class="avatar" aria-hidden="true">{page.data.author.charAt(0)}</span>
         <div>
-          {#if page.previous}
-          <a href="{page.previous.url}">
-            ← {page.previous.title}
-          </a>
-          {/if}
-          {#if page.next}
-          <a href="{page.next.url}">
-            {page.next.title} →
-          </a>
-          {/if}
+          <p class="post-author__name">{page.data.author}</p>
+          <p class="post-author__bio">Writing about Quarkus and cloud-native Java on Quarkus Guru.</p>
         </div>
-      </footer>
-    </article>
-  </div>
-</div>
+      </aside>
+      {/if}
 
+      <nav class="post-nav">
+        {#if page.previous}
+        <a class="post-nav__link post-nav__prev" href="{page.previous.url}">
+          <span class="post-nav__dir">&larr; Previous</span>
+          <span class="post-nav__title">{page.previous.title}</span>
+        </a>
+        {#else}
+        <span></span>
+        {/if}
+        {#if page.next}
+        <a class="post-nav__link post-nav__next" href="{page.next.url}">
+          <span class="post-nav__dir">Next &rarr;</span>
+          <span class="post-nav__title">{page.next.title}</span>
+        </a>
+        {#else}
+        <span></span>
+        {/if}
+      </nav>
+    </div>
+  </div>
+</article>

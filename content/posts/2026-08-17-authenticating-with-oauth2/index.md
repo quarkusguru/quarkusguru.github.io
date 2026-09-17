@@ -21,6 +21,7 @@ In the past, some applications took the user credentials, logged in on the user 
 By the end of this tutorial, you will understand:
 - What OAuth2 is and why it matters for secure integrations
 - How the OAuth2 authorization flow works
+- What OIDC is and how it adds authentication on top of OAuth2
 - How to authenticate a Quarkus Flow workflow using OAuth2
 
 ## 2. What is OAuth2
@@ -78,6 +79,21 @@ The **Client Credentials Flow** is simpler, since it does not involve a user or 
 3. The **Client** calls the **Resource Server** with the access token.
 
 This flow fits a machine-to-machine scenario, such as a Quarkus Flow workflow that calls an external API on its own, without a specific end user in the loop. The Client Credentials Flow is also the most commonly used grant type for service-to-service authentication, and it is the flow the rest of this tutorial focuses on.
+
+### 2.4 What is OIDC
+
+OAuth 2.0 answers "what can this client do". It does not answer "who is this user". **OpenID Connect (OIDC)** is an identity layer built on top of OAuth 2.0 that answers the second question. OIDC standardizes authentication on top of the same actors, flows, and endpoints OAuth 2.0 already defines, instead of inventing a separate protocol.
+
+When **FlowPhotos** uses the Authorization Code Flow to let a user sign in with Google, plain OAuth 2.0 only tells **FlowPhotos** that it received a valid access token for whatever scopes the user granted. It does not tell **FlowPhotos** who signed in. OIDC closes that gap by adding two pieces on top of the OAuth 2.0 flow:
+
+- **ID Token**: a signed JSON Web Token (JWT) that the **Authorization Server** issues alongside the access token. It carries claims such as `sub` (a stable, unique identifier for the user), `name`, `email`, and `iss` (the issuer). **FlowPhotos** can verify its signature and read these claims directly, without an extra network call.
+- **UserInfo Endpoint**: an endpoint the **Client** can call with the access token to fetch additional profile claims that do not fit in the ID Token, such as a profile picture URL.
+
+To request an ID Token, the **Client** adds the `openid` scope to the authorization request, alongside any other scopes it needs, such as `profile` or `email`. Requesting `openid` is what turns a plain OAuth 2.0 Authorization Code Flow into an OIDC sign-in flow, since the **Authorization Server** only issues an ID Token when the request includes it.
+
+OIDC also standardizes **Discovery**, a JSON document exposed at `/.well-known/openid-configuration` that advertises the authorization endpoint, the token endpoint, the UserInfo endpoint, and the signing keys the **Authorization Server** uses, all in one place. [Section 5.6](#56-oauth2-versus-oidc-discovery) revisits this document, since it is what lets Quarkus Flow build an `OidcClient` without you specifying the token endpoint path by hand.
+
+NOTE: The Client Credentials Flow described above has no end user, so an ID Token would have nothing to identify.
 
 ## 3. Prerequisites
 
@@ -175,9 +191,13 @@ Under `endpoint.authentication`, the `oauth2` key tells Quarkus Flow to negotiat
 - `client.id` and `client.secret`: the credentials **FlowPhotos** uses to authenticate itself, resolved from the `$secret` expressions covered in the next section
 - `endpoints.token`: the path of the token endpoint, relative to `authority`. Keycloak exposes it at `/protocol/openid-connect/token` (the default is `/oauth2/token` when this field is omitted).
 
+`endpoints` is an `oauth2`-only field. The `oidc` scheme used later in this tutorial has no equivalent, since it resolves every endpoint through discovery instead. [Section 5.6](#56-oauth2-versus-oidc-discovery) explains what that means in practice, and when each scheme fits.
+
 With `quarkus-flow-oidc` on the classpath, this `oauth2` block is enough to build (or reuse) a Quarkus `OidcClient` from the `authority`, `client`, and `endpoints` values above, request a token from it, and attach the result to the outbound call as an `Authorization: Bearer <token>` header.
 
 This negotiation happens on every call, since Quarkus Flow does not cache the access token itself. Only the underlying `OidcClient` and its HTTP connection pool are cached and reused across calls.
+
+The `oauth2` block above follows the `OAuth2 Authentication` scheme from the Open Workflow Specification, and the `oidc` shorthand used in [section 5.6](#56-oauth2-versus-oidc-discovery) follows its `OpenIdConnect Authentication` scheme. The official DSL reference documents every field for both, [OAuth2 Authentication](https://github.com/open-workflow-specification/specification/blob/main/dsl-reference.md#oauth2-authentication) and [OpenIdConnect Authentication](https://github.com/open-workflow-specification/specification/blob/main/dsl-reference.md#openidconnect-authentication).
 
 ### 5.3. Providing the client secret safely
 
@@ -311,7 +331,9 @@ Both tasks now resolve the same named policy, so Quarkus Flow builds a single `O
 
 ### 5.6. OAuth2 versus OIDC discovery
 
-Everything so far used the `oauth2` key, which requires you to specify the token endpoint path explicitly, since it disables OIDC discovery. Keycloak, like most modern identity providers, also exposes a standard OpenID Connect discovery document at `/.well-known/openid-configuration`. When your authorization server supports it, the `oidc` key lets Quarkus Flow discover the token endpoint on its own, so you can drop `endpoints` entirely:
+The `oauth2` and `oidc` schemes share the same fields for `grant`, `client`, `scopes`, and `audiences`, with one structural difference: only `oauth2` defines an `endpoints` object (`token`, `revocation`, `introspection`, each with its own default path). The `oidc` scheme has no `endpoints` field at all, so it has no way to name a token path by hand. Discovery is not an alternative it offers, it is the only mechanism it has for finding one.
+
+Keycloak, like most modern identity providers, exposes a standard OpenID Connect discovery document at `/.well-known/openid-configuration`. When your authorization server supports it, the `oidc` key lets Quarkus Flow discover the token endpoint on its own, so you can drop `endpoints` entirely:
 
 ```yaml
 authentication:
@@ -323,7 +345,21 @@ authentication:
       secret: '$\{ $secret.photoService.clientSecret }'
 ```
 
-Use `oidc` whenever the authorization server supports discovery and you want one less path to keep in sync if it ever changes. Use `oauth2` when you need to point at a specific token endpoint, such as a provider without discovery support or a non-default path. Quarkus Flow treats the two as distinct policies internally, since `oidc` builds its `OidcClient` with discovery enabled and `oauth2` builds it with discovery disabled and an explicit token path, so switching between them for the same authority still results in two separately cached clients.
+This is not just a config shortcut, it changes what happens at runtime. Quarkus Flow builds the underlying `OidcClient` with discovery enabled for `oidc`, so Quarkus itself issues an HTTP request to `authority` plus `/.well-known/openid-configuration` the first time it needs a token, and reads the token (and other) endpoints from the response. For `oauth2`, discovery stays disabled, and Quarkus Flow takes the token path from `endpoints.token` instead, falling back to the spec default of `/oauth2/token` when that field is omitted.
+
+Use `oidc` when:
+
+- The authorization server publishes a discovery document, as Keycloak does
+- You want one less path to keep in sync if the authorization server ever moves its endpoints
+- You do not need to override the revocation or introspection endpoints, since `oidc` cannot express them
+
+Use `oauth2` when:
+
+- The authorization server has no discovery document to fall back on
+- You need a non-default token path, exactly the case in [section 5.1](#51-defining-the-workflow), where Keycloak exposes its token endpoint at `/protocol/openid-connect/token` instead of the spec default
+- You need explicit control over the revocation or introspection endpoints
+
+Quarkus Flow treats the two as distinct policies internally, so switching between them for the same authority still results in two separately cached `OidcClient` instances.
 
 ### 5.7. Routing to a specific named OIDC client
 
@@ -475,6 +511,7 @@ In this tutorial, we explored how to authenticate a Quarkus Flow workflow's HTTP
 
 - What OAuth2 is, why it protects user credentials and trust, and how it differs from authentication
 - The Authorization Code Flow, the flow behind "Sign in with Google" and SSO, and the Client Credentials Flow used for service-to-service calls
+- What OIDC is, and how the ID Token, the UserInfo endpoint, and Discovery add authentication on top of OAuth2
 - Declaring an inline `oauth2` authentication policy on an HTTP call task, in both YAML and Java DSL
 - Reusing a named authentication policy across multiple tasks
 - The difference between `oauth2` and `oidc`, and when to prefer discovery
@@ -487,13 +524,13 @@ Delegated access through OAuth2 keeps **FlowPhotos**, and the services it depend
 
 To deepen your understanding, consider:
 
-- Adding the Authorization Code Flow to let a real user connect their Gmail or GitHub contacts to **FlowPhotos**
 - Combining OAuth2 authentication with the [HTTP retry and timeout configuration](/posts/a-brief-introduction-to-quarkus-flow#8-error-handling) from the introductory tutorial, so a slow authorization server does not hang the whole workflow
 
 ### 8.2. Further Reading
 
 - [The OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)
 - [OAuth 2.0 and PKCE](https://oauth.net/2/pkce/)
+- [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html)
 - [Quarkus OIDC Client documentation](https://quarkus.io/guides/security-oidc-client-reference)
 - [Quarkus Flow Documentation](https://docs.quarkiverse.io/quarkus-flow/dev/index.html)
 - [A brief introduction to Quarkus Flow](/posts/a-brief-introduction-to-quarkus-flow)

@@ -1,42 +1,47 @@
 <header class="site-header">
-  <div class="header-inner">
-    <!-- Logo/Name -->
-    <a href="{site.url.relative}"
-       class="header-logo">
-      {site.title.toUpperCase}
+  <div class="site-header__inner">
+    <a href="{site.url.relative}" class="site-brand">
+      <svg class="site-brand__mark" width="22" height="22" viewBox="0 0 32 32" role="img" aria-label="Quarkus Guru">
+        <defs>
+          <radialGradient id="qg-nucleus" cx="38%" cy="32%" r="72%">
+            <stop offset="0%" stop-color="#ff7089"/>
+            <stop offset="55%" stop-color="#ff1e4c"/>
+            <stop offset="100%" stop-color="#cf0f39"/>
+          </radialGradient>
+        </defs>
+        <ellipse class="brand-ring" cx="16" cy="16" rx="13.2" ry="5.4" fill="none" stroke="#4695eb" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="8" fill="url(#qg-nucleus)"/>
+        <path class="brand-ring" d="M2.8,16 A13.2,5.4 0 0 0 29.2,16" fill="none" stroke="#4695eb" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>{site.title.toUpperCase}</span>
     </a>
 
-    <!-- Mobile Menu Button -->
-    <button id="mobile-menu-button" class="nav-item" aria-label="Menu">
+    <button id="mobile-menu-button" class="site-header__burger" aria-label="Menu">
       <span class="icon icon-menu"></span>
     </button>
 
     {#fragment id=menu}
     {@java.lang.String device = 'desktop'}
-    <!-- Navigation -->
     <div class="{device == 'desktop' ? 'desktop-nav' : 'mobile-nav hidden'}">
-      <nav>
+      <nav class="site-nav">
         {#for item in site.data.navigation}
-        <a href="{site.url.resolve(item.url)}" class="nav-item">
-          {item.title}
-        </a>
-        {/for}
-        {#for social in site.data.social??}
-        <a href="{social.link}" class="nav-social" target="_blank" rel="noopener noreferrer" aria-label="{social.name}" title="{social.name}">
-          <span class="icon icon-{social.icon}"></span>
-          {#if device == 'mobile'}<span id="theme-text">{social.name}</span>{/if}
-        </a>
+        <a href="{site.url.resolve(item.url)}" class="site-nav__link">{item.title}</a>
         {/for}
       </nav>
 
+      <div class="site-header__tools">
+        {#for social in site.data.social??}
+        <a href="{social.link}" class="site-social" target="_blank" rel="noopener noreferrer" aria-label="{social.name}" title="{social.name}">
+          <span class="icon icon-{social.icon}"></span>
+        </a>
+        {/for}
 
-      <!-- Theme Toggle -->
-      <button class="nav-item theme-toggle" aria-label="Toggle theme">
-        <span class="hidden toggle-light icon icon-sun"></span>
-        <span class="hidden toggle-dark icon icon-moon"></span>
-        {#if device == 'mobile'}<span class="theme-text">LIGHT MODE</span>{/if}
-      </button>
-
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <span class="hidden toggle-light icon icon-sun"></span>
+          <span class="hidden toggle-dark icon icon-moon"></span>
+          {#if device == 'mobile'}<span class="theme-text">DARK MODE</span>{/if}
+        </button>
+      </div>
     </div>
     {/fragment}
   </div>
