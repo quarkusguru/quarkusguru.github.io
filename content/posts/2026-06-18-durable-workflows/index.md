@@ -87,7 +87,8 @@ Next, add the `io.quarkiverse.flow:quarkus-flow` and `io.quarkiverse.flow:quarku
 </dependency>
 ```
 
-**NOTE:** At this moment, the current Quarkus Flow version is 0.11.0!
+> [!NOTE]
+> At this moment, the current Quarkus Flow version is 0.11.0!
 
 The `quarkus-flow-redis` extension stores workflow checkpoints in Redis. In dev and test mode, Quarkus [Dev Services](https://quarkus.io/guides/redis-dev-services) automatically starts a Redis container for you, so you can follow along without any extra configuration.
 
@@ -322,7 +323,8 @@ This is a simple JAX-RS resource that starts the `RequestVacationFlow` and uses 
 - **Starting the workflow asynchronously:** `flow.instance(vacationRequest)` creates the instance and `instance.start()` launches it without blocking, so there is no need to wait on a long-running process.
 - **Sending an event to a running workflow:** To wake up the paused `waitByManagerReview` task, we publish a `CloudEvent` through the `WorkflowApplication#eventPublishers()` API. We take the first `EventPublisher`, build a `CloudEvent` whose `type` matches the one the `listen` task waits for (`guru.quarkus.vacation.reviewed`), and call `publish`.
 
-**NOTE:** Building and publishing CloudEvents by hand is fine for a small example. For real applications, the [Quarkus Flow messaging](https://docs.quarkiverse.io/quarkus-flow/dev/messaging.html) integration lets you emit and consume workflow events through Quarkus Reactive Messaging, connecting workflows to channels and brokers (Kafka, AMQP, and so on) instead of wiring publishers by hand.
+> [!NOTE]
+> Building and publishing CloudEvents by hand is fine for a small example. For real applications, the [Quarkus Flow messaging](https://docs.quarkiverse.io/quarkus-flow/dev/messaging.html) integration lets you emit and consume workflow events through Quarkus Reactive Messaging, connecting workflows to channels and brokers (Kafka, AMQP, and so on) instead of wiring publishers by hand.
 
 ## 6. Executing the workflow and recovering from a crash
 

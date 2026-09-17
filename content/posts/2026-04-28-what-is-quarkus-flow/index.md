@@ -58,7 +58,8 @@ Next, add the `io.quarkiverse.flow:quarkus-flow` dependency into the `pom.xml` f
 </dependency>
 ```
 
-**NOTE:** At this moment, the current Quarkus Flow version is 0.9.0!
+> [!NOTE]
+> At this moment, the current Quarkus Flow version is 0.9.0!
 
 After adding the dependency, your project structure should look like this:
 
