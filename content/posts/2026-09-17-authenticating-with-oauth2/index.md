@@ -1,6 +1,6 @@
 ---
 title: "Authenticating Your Workflow with OAuth2"
-date: 2026-09-17 21:11:00 -0300
+date: 2026-09-17 10:00:00 -0300
 tags: [blogging, quarkus-flow, flow, workflow, oauth2, oidc, security]
 description: "Learn how OAuth2 works and how to authenticate a Quarkus Flow workflow's HTTP calls with the Client Credentials Flow using the Quarkus Flow OIDC extension"
 toc: true
