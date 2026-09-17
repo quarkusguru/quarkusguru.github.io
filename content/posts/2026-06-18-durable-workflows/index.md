@@ -62,9 +62,9 @@ Let us add the Quarkus Flow BOM into `pom.xml` file:
 <dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>${quarkus.platform.group-id}</groupId>
-            <artifactId>${quarkus.platform.artifact-id}</artifactId>
-            <version>${quarkus.platform.version}</version>
+            <groupId>$\{quarkus.platform.group-id}</groupId>
+            <artifactId>$\{quarkus.platform.artifact-id}</artifactId>
+            <version>$\{quarkus.platform.version}</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
