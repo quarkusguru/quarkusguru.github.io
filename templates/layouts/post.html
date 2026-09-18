@@ -10,7 +10,7 @@ asciidoc-attributes:
     <a href="{site.url.relative}">Blog</a>
     {#if page.data.category??}
     <span class="post-breadcrumb__sep">/</span>
-    <a href="{site.url('/posts/tag/')}{page.data.category.slugify}">{page.data.category}</a>
+    <a href="{site.url('/posts/tag/')}{page.data.category.slugify.toLowerCase}">{page.data.category}</a>
     {#else if page.data.tags??}
     <span class="post-breadcrumb__sep">/</span>
     <a href="{site.url('/posts/tag/')}{page.data.tags.asStrings.get(0).slugify}">{page.data.tags.asStrings.get(0)}</a>
@@ -31,7 +31,7 @@ asciidoc-attributes:
         </span>
       </span>
       {#if page.data.category??}
-      <a class="post-cat" href="{site.url('/posts/tag/')}{page.data.category.slugify}">{page.data.category}</a>
+      <a class="post-cat" href="{site.url('/posts/tag/')}{page.data.category.slugify.toLowerCase}">{page.data.category}</a>
       {#else if page.data.tags??}
       <a class="post-cat" href="{site.url('/posts/tag/')}{page.data.tags.asStrings.get(0).slugify}">{page.data.tags.asStrings.get(0)}</a>
       {/if}
