@@ -19,9 +19,16 @@ social:
 ---
 
 <section class="home-hero">
+  <div class="home-intro">
+    <img class="home-intro__logo" src="{site.url('/images/arqano.svg')}" alt="" width="144" height="144">
+    <div>
+      <h1 class="home-intro__title">{page.data.greeting}</h1>
+      <p class="home-intro__tagline">{page.data.tagline}</p>
+    </div>
+  </div>
   <div class="console">
     <div class="console__bar">
-      <img src="{site.url('/images/quark.svg')}" alt="">
+      <img src="{site.url('/images/arqano.svg')}" alt="">
       <span class="console__name">quarkus.guru</span>
       <span>&mdash; recent</span>
       <span class="console__count">{site.collections.posts.size} guides</span>

@@ -138,18 +138,6 @@
     }
     .site-brand:hover { color: #fff; text-decoration: none; }
     .site-brand__mark { width: 22px; height: 22px; display: block; }
-    .site-brand__mark .brand-ring {
-        transform-box: view-box;
-        transform-origin: 16px 16px;
-        animation: orbit-spin 6s linear infinite;
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .site-brand__mark .brand-ring { animation: none; }
-    }
-    @keyframes orbit-spin {
-        from { transform: rotate(-28deg); }
-        to { transform: rotate(332deg); }
-    }
 
     .site-header__burger {
         display: inline-flex;
@@ -238,6 +226,29 @@
         box-sizing: border-box;
     }
     .home-hero .console { max-width: 80rem; margin: 0 auto; }
+
+    .home-intro {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 1.5rem 0 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.75rem;
+    }
+    .home-intro__logo { width: 144px; height: 144px; flex: none; display: block; }
+    .home-intro__title {
+        margin: 0 0 .5rem;
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+        line-height: 1.15;
+        color: var(--ink);
+    }
+    .home-intro__tagline { margin: 0; max-width: 40rem; color: var(--slate); font-size: 1.05rem; }
+    @media (max-width: 560px) {
+        .home-intro { flex-direction: column; text-align: center; gap: 1rem; }
+        .home-intro__logo { width: 112px; height: 112px; }
+    }
 
     .console {
         background: var(--navy);
@@ -830,6 +841,9 @@
     /* --------------------------------------------------------
        404
        -------------------------------------------------------- */
+    .about-logo { display: block; width: 200px; height: 200px; margin: 0 auto 1.5rem; }
+    @media (max-width: 560px) { .about-logo { width: 150px; height: 150px; } }
+
     .notfound {
         max-width: 40rem;
         margin: 3rem auto;
@@ -838,7 +852,7 @@
         gap: 1rem;
         justify-items: center;
     }
-    .notfound img { width: 84px; height: 84px; }
+    .notfound img { width: 140px; height: 140px; }
     .notfound__code {
         font-family: var(--font-mono);
         font-size: .8rem;
